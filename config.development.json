@@ -1,0 +1,12 @@
+{
+  "port": 3001,
+  "secret": "secret",
+  "tokenExpiresIn": "999 days",
+  "logger": {
+    "consoleLevel": 4,
+    "fileLevel": 1,
+    "maxsize": 100000,
+    "maxFiles": 20,
+    "path": "logs/"
+  }
+}
