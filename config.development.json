@@ -2,6 +2,11 @@
   "port": 3001,
   "secret": "secret",
   "tokenExpiresIn": "999 days",
+  "verify-code": {
+    "role": "expert-user",
+    "len": 6,
+    "tokenExpiresIn": "180000"
+  },
   "logger": {
     "consoleLevel": 4,
     "fileLevel": 1,

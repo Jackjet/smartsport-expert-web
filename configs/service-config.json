@@ -34,5 +34,9 @@
   "expert-user": {
     "port": 10008,
     "host": "localhost"
+  },
+  "sms": {
+    "port": 10011,
+    "host": "localhost"
   }
 }

@@ -16,6 +16,8 @@ router.put('/:id', userController.update);
 // 查询专家账号数量
 router.get('/count', utils.refsFull, userController.count);
 
-router.post('/change_password', userController.updatePwd)
+// 专家账号修改密码
+router.post('/change_password', userController.updatePwd);
+
 exports = module.exports = router;
 
