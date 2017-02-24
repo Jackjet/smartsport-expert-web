@@ -1,0 +1,13 @@
+{
+  "expert-user": {
+    "cmd": [
+      "user_create",
+      "user_update",
+      "user_changePwd",
+      "user_read",
+      "user_read_id",
+      "user_login",
+      "user_count"
+    ]
+  }
+}
