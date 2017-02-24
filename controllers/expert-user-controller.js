@@ -43,15 +43,26 @@ class UserController {
     const data = req.body;
     // 添加创建者
     data.createdBy = req.user && req.user.sub;
+    data.expertTeam = req.userInfo.expertTeam;
     if (!ObjectId.isValid(req.body.role)) {
       return res.error({ code: 29999, msg: '该角色不存在' });
     }
-    // 查找专家角色
-    return serviceProxy.send({ module: 'expert-user', cmd: 'role_read', data: { _id: req.body.role } })
-      .then((r) => {
-      // 判断角色存在性
-        if (!r.success || !r.data) {
-          return res.error({ code: 29999, msg: '该角色不存在' });
+    return Promise.props({
+      target: serviceProxy.send({ module: 'expert-user', cmd: 'role_read_id', data: { id: data.role } }),
+      self: serviceProxy.send({ module: 'expert-user', cmd: 'role_read_id', data: { id: req.userInfo.role } }),
+    })
+      .then((roles) => {
+        if (!roles.target.success || !roles.self.success ||
+          !roles.target.data || !roles.self.data) {
+          return res.error({ code: 29999, msg: '获取权限列表错误' });
+        }
+        if (req.userInfo.expertTeam !== roles.target.data.expertTeam) {
+          return res.error({ code: 29999, msg: '非本组织角色,无权限修改' });
+        }
+        const difference = _.differenceWith(roles.target.data.permissions,
+          roles.self.data.permissions, _.isEqual);
+        if (difference.length) {
+          return res.error({ code: 29999, msg: '超越当前用户权限范围' });
         }
         // 创建
         return serviceProxy.send({ module: 'expert-user', cmd: 'user_create', data })
@@ -64,6 +75,7 @@ class UserController {
       })
       .catch(next);
   }
+
   // 更新
   static update(req, res, next) {
     if (!req.body || _.isEmpty(req.body) || !req.params.id) {
@@ -77,20 +89,67 @@ class UserController {
     }
     // 更新账号信息
     const data = req.body;
-    _.assign(data, { id: req.params.id });
-    return serviceProxy.send({ module: 'expert-user', cmd: 'user_update', data })
-      .then((result) => {
-        if (!result.success) {
-          return res.error({ code: 29999, msg: result.msg || '修改失败' });
+    _.assign(data, { id: req.params.id, expertTeam: req.userInfo.expertTeam });
+    return serviceProxy.send({ module: 'expert-user', cmd: 'user_read_id', data: { id: req.params.id } })
+    .then((user) => {
+      if (!user.success || !user.data) {
+        return res.error({ code: 29999, msg: '该用户不存在' });
+      }
+      return Promise.props({
+        target: serviceProxy.send({ module: 'expert-user', cmd: 'role_read_id', data: { id: user.data.role } }),
+        self: serviceProxy.send({ module: 'expert-user', cmd: 'role_read_id', data: { id: req.userInfo.role } }),
+      }).then((roles) => {
+        if (!roles.target.success || !roles.self.success || !roles.target.data || !roles.self.data) {
+          return res.error({ code: 29999, msg: '获取权限列表错误' });
         }
-        return res.api();
-      })
+        if (req.userInfo.expertTeam !== roles.target.data.expertTeam) {
+          return res.error({ code: 29999, msg: '非本组织角色,无权限修改' });
+        }
+        let difference = _.differenceWith(roles.target.data.permissions,
+          roles.self.data.permissions, _.isEqual);
+        if (difference.length) {
+          return res.error({ code: 29999, msg: '超越当前用户权限范围' });
+        }
+        if (data.role) {
+          return serviceProxy.send({ module: 'expert-user', cmd: 'role_read_id', data: { id: data.role } })
+            .then((role) => {
+              if (!role.success || !role.data) {
+                return res.error({ code: 29999, msg: '获取权限列表错误x' });
+              }
+              if (req.userInfo.expertTeam !== role.data.expertTeam) {
+                return res.error({ code: 29999, msg: '非本组织角色,无权限修改x' });
+              }
+              difference = _.differenceWith(role.data.permissions,
+                roles.self.data.permissions, _.isEqual);
+              if (difference.length) {
+                return res.error({ code: 29999, msg: '超越当前用户权限范围x' });
+              }
+              return serviceProxy.send({ module: 'expert-user', cmd: 'user_update', data })
+                .then((result) => {
+                  if (!result.success) {
+                    return res.error({ code: 29999, msg: result.msg || '修改失败' });
+                  }
+                  return res.api();
+                });
+            });
+        }
+        return serviceProxy.send({ module: 'expert-user', cmd: 'user_update', data })
+          .then((result) => {
+            if (!result.success) {
+              return res.error({ code: 29999, msg: result.msg || '修改失败' });
+            }
+            return res.api();
+          });
+      });
+    })
       .catch(next);
   }
+
   // 获取用户数量
   static count(req, res, next) {
     const query = req.query;
     const data = _.pick(query, ['filters']);
+    data.filters.expertTeam = req.userInfo.expertTeam;
     return serviceProxy.send({ module: 'expert-user', cmd: 'user_count', data }).then((result) => {
       if (!result.success) {
         return res.error({ code: 29999, msg: result.msg });
@@ -98,10 +157,12 @@ class UserController {
       return res.api(result.data);
     }).catch(next);
   }
+
   // 获取用户列表
   static find(req, res, next) {
     const query = req.query;
     const data = _.pick(query, ['filters', 'limit', 'skip', 'sort']);
+    data.filters.expertTeam = req.userInfo.expertTeam;
     const team = [];
     const role = [];
     // 查找用户列表
@@ -137,6 +198,7 @@ class UserController {
       });
     }).catch(next);
   }
+
   // 用户登录
   static login(req, res, next) {
     const body = req.body;
@@ -174,6 +236,7 @@ class UserController {
       })
       .catch(next);
   }
+
   // 修改密码
   static updatePwd(req, res, next) {
     // 参数校验
@@ -204,6 +267,7 @@ class UserController {
       })
       .catch(next);
   }
+
   // 获取验证码
   static getVerifyCode(req, res, next) {
     if (!req.body.tel) {
@@ -216,6 +280,9 @@ class UserController {
       cmd: 'user_read',
       data: { filters: { tel: req.body.tel } },
     }).then((results) => {
+      if (!results.success) {
+        return res.error({ code: 29999, msg: '服务异常' });
+      }
       // 未注册手机返回失败
       if (!results.data.length) {
         return res.error({ code: 29999, msg: '该手机号码尚未注册' });
@@ -236,6 +303,7 @@ class UserController {
     })
       .catch(next);
   }
+
   // 校验验证码
   static verifyCode(req, res, next) {
     // 参数校验
@@ -249,9 +317,9 @@ class UserController {
     // 验证验证码正确性
     return serviceProxy
       .send({ module: 'sms', cmd: 'sms_verify', data })
-      .then((verrify) => {
-        if (!verrify.success) {
-          return res.error({ code: 29999, msg: verrify.msg });
+      .then((verify) => {
+        if (!verify.success) {
+          return res.error({ code: 29999, msg: verify.msg });
         }
         // 获取用户信息
         return serviceProxy.send({
@@ -289,6 +357,7 @@ class UserController {
       })
       .catch(next);
   }
+
   // 重置密码
   static setPwd(req, res, next) {
     if (!req.body.token || !req.body.password) {
@@ -302,7 +371,7 @@ class UserController {
         const data = {};
         data.id = payload.sub;
         data.password = req.body.password;
-        // 修改密码
+
         return serviceProxy.send({ module: 'expert-user', cmd: 'user_update', data })
           .then((result) => {
             if (!result.success) {

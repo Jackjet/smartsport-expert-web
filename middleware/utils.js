@@ -1,4 +1,5 @@
 const _ = require('lodash')
+const serviceProxy = require('../services/service-proxy');
 
 class Utils {
   // 分页转换
@@ -18,6 +19,20 @@ class Utils {
     query.sort = sort;
     _.assign(req.query, query);
     next();
+  }
+
+  static getUserInfo(module) {
+    return function (req, res, next) {
+      const id = req.user.sub;
+      return serviceProxy.send({ module, cmd: 'user_read', data: { filters: { _id: id } } })
+        .then((user) => {
+          if (!user.success) {
+            return res.error({ code: 29999, msg: user.msg });
+          }
+          req.userInfo = user.data[0];
+          return next();
+        });
+    };
   }
 }
 
