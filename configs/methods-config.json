@@ -7,7 +7,19 @@
       "user_read",
       "user_read_id",
       "user_login",
-      "user_count"
+      "user_count",
+      "role_create",
+      "role_update",
+      "role_read",
+      "role_read_id",
+      "role_delete",
+      "permission_read"
+    ]
+  },
+  "sms": {
+    "cmd": [
+      "sms_get",
+      "sms_verify"
     ]
   }
 }
