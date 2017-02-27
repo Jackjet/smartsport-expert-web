@@ -35,6 +35,10 @@
     "port": 10008,
     "host": "localhost"
   },
+  "knowledge": {
+    "port": 10009,
+    "host": "localhost"
+  },
   "sms": {
     "port": 10011,
     "host": "localhost"
