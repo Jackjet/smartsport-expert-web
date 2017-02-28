@@ -63,7 +63,6 @@ class KnowledgeController {
     const body = req.body;
     const params = req.params;
     const tags = body.tags || [];
-    // TODO 分类处理
     // 标签处理，查询或者创建，返回id数组
     return Promise.props({
       tags: upsertTags(tags),
