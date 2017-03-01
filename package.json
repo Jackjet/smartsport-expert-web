@@ -4,6 +4,7 @@
   "description": "smartsport management web",
   "main": "index.js",
   "dependencies": {
+    "ali-oss": "^4.8.0",
     "bluebird": "^3.4.7",
     "body-parser": "^1.15.2",
     "express": "^4.14.0",

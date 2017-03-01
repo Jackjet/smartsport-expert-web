@@ -137,14 +137,22 @@ class KnowledgeController {
       let tagList = [];
       // 所有使用的类型
       const typeList = [];
+      // 所使用的分类
+      const categoryList = [];
+      // 审核人
+      const auditList = [];
       knowledge.forEach((item) => {
         tagList = tagList.concat(item.tags);
         typeList.push(item.type);
+        categoryList.push(item.category && item.category.id);
+        auditList.push(item.auditBy);
       });
-      // TODO 是否需要关联查询出分类
       return Promise.props({
+        auditBy: serviceProxy.send({ module: 'expert-user', cmd: 'user_read', data: { _id: { $in: auditList } } }),
         tags: serviceProxy.send({ module: 'knowledge', cmd: 'knowledge_tag_read', data: { _id: { $in: tagList } } }),
         type: serviceProxy.send({ module: 'knowledge', cmd: 'knowledge_type_read', data: { _id: { $in: typeList } } }),
+        category: serviceProxy
+          .send({ module: 'knowledge', cmd: 'knowledge_category_read_list', data: { _id: { $in: categoryList } } }),
       });
     }).then((props) => {
       for (let i = 0; i < knowledge.length; i += 1) {
@@ -154,6 +162,11 @@ class KnowledgeController {
         for (let j = 0; j < knowledge[i].tags.length; j += 1) {
           knowledge[i].tags[j] = _.find(props.tags.data, { _id: knowledge[i].tags[j] });
         }
+        // id替换分类类型
+        knowledge[i].category = _.find(props.category.data, { _id: knowledge[i].category.id });
+        // id添加审核人名字
+        const auditUser = _.find(props.auditBy.data, { _id: knowledge[i].auditBy });
+        knowledge[i].auditName = (auditUser && auditUser.name) || undefined;
       }
       return res.api(knowledge);
     })
@@ -171,16 +184,20 @@ class KnowledgeController {
     const params = req.params;
     const id = params.id;
     const userId = req.user.sub;
-    // TODO 是否需要关联查询出分类
     return serviceProxy.send({ module: 'knowledge', cmd: 'knowledge_read_id', data: { id } }).then((result) => {
       if (!result.success) {
         return res.error({ code: 29999, msg: result.msg });
       }
+      const categoryId = result.data.category && result.data.category.id;
       return Promise.props({
         knowledge: result.data,
+        auditBy: serviceProxy.send({ module: 'expert-user', cmd: 'user_read_id', data: { id: result.data.auditBy } }),
+        createBy: serviceProxy.send({ module: 'expert-user', cmd: 'user_read_id', data: { id: result.data.auditBy } }),
         tags: serviceProxy.send({ module: 'knowledge', cmd: 'knowledge_tag_read', data: { $in: result.data.tags } }),
         type: serviceProxy
           .send({ module: 'knowledge', cmd: 'knowledge_type_read_id', data: { id: result.data.type } }),
+        category: serviceProxy
+          .send({ module: 'knowledge', cmd: 'knowledge_category_read', data: { id: categoryId, struct: 'node' } }),
         audit: ownAudit(userId),
       });
     }).then((props) => {
@@ -189,6 +206,11 @@ class KnowledgeController {
       for (let i = 0; i < knowledge.tags.length; i += 1) {
         knowledge.tags[i] = _.find(props.tags.data, { _id: knowledge.tags[i] });
       }
+      knowledge.category = props.category.data;
+      // 审核人信息
+      knowledge.auditName = props.auditBy.data && props.auditBy.data.name;
+      // 创建人信息
+      knowledge.createName = props.createBy.data && props.createBy.data.name;
       // 是否有审核权限
       knowledge.audit = props.audit;
       res.api(knowledge);
