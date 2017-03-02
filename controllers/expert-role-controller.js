@@ -17,7 +17,7 @@ class RoleController {
     data.permissions = req.body.permissions || [];
     // 获取所有权限
     return serviceProxy
-      .send({ module: 'expert-user', cmd: 'role_read', data: { id: req.userInfo.role } })
+      .send({ module: 'expert-user', cmd: 'role_read_id', data: { id: req.userInfo.role } })
       .then((roles) => {
       // 检验所选权限是否在所有权限列表中
         let difference = req.body.permissions;

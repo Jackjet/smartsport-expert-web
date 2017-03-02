@@ -16,10 +16,20 @@
       "permission_read"
     ]
   },
+  "expert-team":{
+    "cmd": [
+      "expertTeam_read"
+    ]
+  },
   "sms": {
     "cmd": [
       "sms_get",
       "sms_verify"
+    ]
+  },
+  "auth":{
+    "cmd": [
+      "revokeToken_read"
     ]
   }
 }
