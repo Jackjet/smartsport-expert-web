@@ -189,10 +189,27 @@ class KnowledgeController {
         return res.error({ code: 29999, msg: result.msg });
       }
       const categoryId = result.data.category && result.data.category.id;
+      // 收集专家用户的备注
+      const commentsForExpert = [];
+      // 收集运维人员的备注
+      const commentsFormgnt = [];
+      if (Array.isArray(result.data.comments)) {
+        result.data.comments.forEach((item) => {
+          if (item.commentType === 1) {
+            commentsForExpert.push(item.commentBy);
+          } else {
+            commentsFormgnt.push(item.commentBy);
+          }
+        });
+      }
       return Promise.props({
         knowledge: result.data,
         auditBy: serviceProxy.send({ module: 'expert-user', cmd: 'user_read_id', data: { id: result.data.auditBy } }),
         createBy: serviceProxy.send({ module: 'expert-user', cmd: 'user_read_id', data: { id: result.data.auditBy } }),
+        expertComments: serviceProxy
+          .send({ module: 'expert-user', cmd: 'user_read', data: { _id: { $in: commentsForExpert } } }),
+        mgntComments: serviceProxy
+          .send({ module: 'management-user', cmd: 'user_find', data: { _id: { $in: commentsFormgnt } } }),
         tags: serviceProxy.send({ module: 'knowledge', cmd: 'knowledge_tag_read', data: { $in: result.data.tags } }),
         type: serviceProxy
           .send({ module: 'knowledge', cmd: 'knowledge_type_read_id', data: { id: result.data.type } }),
@@ -202,6 +219,8 @@ class KnowledgeController {
       });
     }).then((props) => {
       const knowledge = props.knowledge;
+      const commentsUser =
+        [...(props.mgntComments.data && props.mgntComments.data.results), ...props.expertComments.data];
       knowledge.type = props.type.data;
       for (let i = 0; i < knowledge.tags.length; i += 1) {
         knowledge.tags[i] = _.find(props.tags.data, { _id: knowledge.tags[i] });
@@ -211,6 +230,11 @@ class KnowledgeController {
       knowledge.auditName = props.auditBy.data && props.auditBy.data.name;
       // 创建人信息
       knowledge.createName = props.createBy.data && props.createBy.data.name;
+      // 添加备注人名称
+      for (let j = 0; j < knowledge.comments.length; j += 1) {
+        const user =  _.find(commentsUser, { _id: knowledge.comments[j].commentBy });
+        knowledge.comments[j].commentName = user.name;
+      }
       // 是否有审核权限
       knowledge.audit = props.audit;
       res.api(knowledge);
