@@ -3,6 +3,7 @@ const nconf = require('nconf');
 const passport = require('passport');
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
+const AuthenticateStrategy = require('./middleware/passport-permission');
 
 const serviceProxy = require('./services/service-proxy');
 
@@ -12,6 +13,7 @@ const jwtOpts = {
 };
 
 // 封装权限管理为passport
+passport.use('permission', new AuthenticateStrategy());
 passport.use(new JwtStrategy(jwtOpts, jwtVerify));
 
 /**
