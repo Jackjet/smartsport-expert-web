@@ -6,15 +6,15 @@ const router = express.Router();
 const controller = require('../../controllers/knowledge-category-controller');
 
 // 查询分类
-router.get('/:id', passport.authenticate('permission'), utils.refsFull, controller.read);
+router.get('/:id', controller.read);
 
 // 创建分类
-router.post('/', passport.authenticate('permission'), controller.create);
+router.post('/', controller.create);
 
 // 更新分类
-router.put('/:id', passport.authenticate('permission'), controller.update);
+router.put('/:id', controller.update);
 
 // 删除
-router.put('/:id', passport.authenticate('permission'), controller.delete);
+router.put('/:id', controller.delete);
 
 module.exports = router;
