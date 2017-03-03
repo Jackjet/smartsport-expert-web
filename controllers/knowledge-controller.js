@@ -163,7 +163,9 @@ class KnowledgeController {
           knowledge[i].tags[j] = _.find(props.tags.data, { _id: knowledge[i].tags[j] });
         }
         // id替换分类类型
-        knowledge[i].category = _.find(props.category.data, { _id: knowledge[i].category.id });
+        if (knowledge[i].category) {
+          knowledge[i].category = _.find(props.category.data, { _id: knowledge[i].category.id });
+        }
         // id添加审核人名字
         const auditUser = _.find(props.auditBy.data, { _id: knowledge[i].auditBy });
         knowledge[i].auditName = (auditUser && auditUser.name) || undefined;
