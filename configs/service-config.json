@@ -42,5 +42,9 @@
   "sms": {
     "port": 10011,
     "host": "localhost"
+  },
+  "body-test-management": {
+    "port": 10018,
+    "host": "localhost"
   }
 }
