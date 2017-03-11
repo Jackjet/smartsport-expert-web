@@ -3,12 +3,19 @@ const passport = require('passport');
 
 const router = express.Router();
 const expertRoleCtrl = require('../../controllers/expert-role-controller');
+const expertPCtrl = require('../../controllers/expert-permission-controller');
 const utils = require('../../middleware/utils');
 
 
 // 查询所有专家角色
 router.get('/', passport.authenticate('permission'),
   utils.getUserInfo('expert-user'), expertRoleCtrl.find);
+
+router.get('/permission', passport.authenticate('permission'),
+  utils.getUserInfo('expert-user'), expertPCtrl.getAll);
+
+router.get('/permission/:id', passport.authenticate('permission'),
+  utils.getUserInfo('expert-user'), expertPCtrl.getRolePermission);
 
 // 通过id查询指定专家角色
 router.get('/:id', passport.authenticate('permission'),
