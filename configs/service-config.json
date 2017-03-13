@@ -46,5 +46,13 @@
   "body-test-management": {
     "port": 10018,
     "host": "localhost"
+  },
+  "exercise-prescription": {
+    "port": 10019,
+    "host": "localhost"
+  },
+  "sport-category": {
+    "port": 10015,
+    "host": "localhost"
   }
 }
