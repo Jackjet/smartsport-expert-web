@@ -40,7 +40,7 @@ class ExercisePrescriptionController {
 
   // 查找列表
   static find(req, res, next) {
-    const data = req.body;
+    const data = req.query;
     serviceProxy.send({ module: role, cmd: `${prifix}_read`, data })
       .then((result) => {
         if (result.success) {
@@ -54,7 +54,7 @@ class ExercisePrescriptionController {
   
   // 获取列表总数
   static count(req, res, next) {
-    const data = req.body;
+    const data = req.query;
     serviceProxy.send({ module: role, cmd: `${prifix}_count`, data })
       .then((result) => {
         if (result.success) {

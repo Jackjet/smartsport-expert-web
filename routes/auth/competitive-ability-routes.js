@@ -6,6 +6,6 @@ const router = express.Router();
 const controller = require('../../controllers/competitive-ability-controller');
 
 // 查询
-router.get('/', utils.refsFull, controller.find);
+router.get('/', passport.authenticate('permission'), utils.refsFull, controller.find);
 
 module.exports = router;

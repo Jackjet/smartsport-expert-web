@@ -5,6 +5,8 @@ const passport = require('passport');
 
 const router = express.Router();
 
+router.use('/',  passport.authenticate('permission'));
+
 // router.post('/', schoolController.createSchool);
 
 // router.put('/:id', schoolController.updateSchool);

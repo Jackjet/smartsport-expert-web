@@ -9,6 +9,7 @@ const router = express.Router();
 const controller = require('../../controllers/exercise-prescription-controller');
 const utils = require('../../middleware/utils');
 
+router.use('/',  passport.authenticate('permission'));
 // 查询列表
 router.get('/', utils.refsFull, controller.find);
 
