@@ -16,6 +16,26 @@
       "permission_read"
     ]
   },
+  "body-test-management":{
+    "cmd":[
+      "warning_create",
+      "warning_update",
+      "warning_delete",
+      "warning_read",
+      "warning_read_id",
+      "subject_read",
+      "subject_read_id"
+    ]
+  },
+  "sport-category":{
+    "cmd": [
+      "sport_category_read",
+      "sport_category_find",
+      "sport_category_read_id",
+      "competitive_ability_read",
+      "competitive_ability_read_id"
+    ]
+  },
   "expert-team":{
     "cmd": [
       "expertTeam_read"
