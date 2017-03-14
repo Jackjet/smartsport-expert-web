@@ -16,7 +16,7 @@ class ExercisePrescriptionController {
         if (result.success) {
           res.api(result.data);
         } else {
-          res.error({ code: 40000, msg: result.msg || '创建失败' });
+          res.error({ code: 29999, msg: result.msg || '创建失败' });
         }
       })
       .catch(next);
@@ -32,7 +32,7 @@ class ExercisePrescriptionController {
         if (result.success) {
           res.api(result.data);
         } else {
-          res.error({ code: 40000, msg: result.msg || '更新失败' });
+          res.error({ code: 29999, msg: result.msg || '更新失败' });
         }
       })
       .catch(next);
@@ -46,7 +46,7 @@ class ExercisePrescriptionController {
         if (result.success) {
           res.api(result.data);
         } else {
-          res.error({ code: 40000, msg: result.msg || '查找失败' });
+          res.error({ code: 29999, msg: result.msg || '查找失败' });
         }
       })
       .catch(next);
@@ -60,7 +60,7 @@ class ExercisePrescriptionController {
         if (result.success) {
           res.api(result.data);
         } else {
-          res.error({ code: 40000, msg: result.msg || '查找失败' });
+          res.error({ code: 29999, msg: result.msg || '查找失败' });
         }
       })
       .catch(next);
@@ -77,7 +77,7 @@ class ExercisePrescriptionController {
         if (result.success) {
           res.api(result.data);
         } else {
-          res.error({ code: 40000, msg: result.msg || '查找失败' });
+          res.error({ code: 29999, msg: result.msg || '查找失败' });
         }
       })
       .catch(next);
@@ -93,7 +93,7 @@ class ExercisePrescriptionController {
         if (result.success) {
           res.api(result.data);
         } else {
-          res.error({ code: 40000, msg: result.msg || '删除失败' });
+          res.error({ code: 29999, msg: result.msg || '删除失败' });
         }
       })
       .catch(next);

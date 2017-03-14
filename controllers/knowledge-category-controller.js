@@ -9,7 +9,7 @@ class Controller {
     serviceProxy.send({ module: role, cmd: 'knowledge_category_create', data: req.body })
       .then((result) => {
         if (!result.success) {
-          return res.error({ code: 40000, msg: result.msg || '创建失败' });
+          return res.error({ code: 29999, msg: result.msg || '创建失败' });
         }
         return res.api(result.data);
       })

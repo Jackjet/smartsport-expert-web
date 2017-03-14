@@ -10,7 +10,7 @@ class SchoolController {
 
     proxy.send({ module: MODULE, cmd: 'school_read', data: { id } })
       .then((result) => {
-        if (!result.data) res.error({ code: 40400, msg: '学校不存在' });
+        if (!result.data) res.error({ code: 29999, msg: '学校不存在' });
         res.api(result.data);
       })
       .catch(next);
@@ -52,10 +52,10 @@ class SchoolController {
   // 创建学校
   static createSchool(req, res, next) {
     const createdBy = req.user && req.user.sub;
-    if (!createdBy) return res.error({ code: 40100, msg: '未知用户' });
+    if (!createdBy) return res.error({ code: 29999, msg: '未知用户' });
     return proxy.send({ module: MODULE, cmd: 'school_create', data: Object.assign({ createdBy }, req.body) })
       .then((result) => {
-        if (result.errors) return res.error({ code: 40000, msg: '创建失败', errors: result.errors });
+        if (result.errors) return res.error({ code: 29999, msg: '创建失败', errors: result.errors });
         res.api(result.data);
       })
       .catch(next);
@@ -66,7 +66,7 @@ class SchoolController {
     const data = Object.assign({}, { entity: req.body }, { id: req.params.id });
     proxy.send({ module: MODULE, cmd: 'school_update', data })
       .then((result) => {
-        if (result.errors) res.error({ code: 40000, msg: '更新失败', errors: result.errors });
+        if (result.errors) res.error({ code: 29999, msg: '更新失败', errors: result.errors });
         res.api(result.data);
       })
       .catch(next);
