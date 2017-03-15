@@ -54,5 +54,9 @@
   "sport-category": {
     "port": 10015,
     "host": "localhost"
+  },
+  "school-class": {
+    "port": 10010,
+    "host": "localhost"
   }
 }
