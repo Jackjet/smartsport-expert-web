@@ -28,7 +28,7 @@ class PlanController extends BaseController {
         return null;
       });
       const info = yield Promise.props({
-        physiqueSubject: $.sportCategory.sportCategoryFind({ filters: { _id: { $in: physiqueSubject } }, limit: 9999 }),
+        physiqueSubject: $.bodyTestManagement.subjectRead({ filters: { _id: { $in: physiqueSubject } }, limit: 9999 }),
         competitiveAbilities: $.sportCategory.competitiveAbilityRead({ filters: { _id: { $in: competitiveAbilities } }, limit: 9999 }),
       });
       if (!info.physiqueSubject.success || !info.competitiveAbilities.success) {
