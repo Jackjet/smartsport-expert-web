@@ -1,6 +1,7 @@
 const serviceProxy = require('../services/service-proxy');
 const _ = require('lodash');
 const Promise = require('bluebird');
+const fs = require('fs');
 
 class ConstitutionController {
   /**
@@ -89,6 +90,49 @@ class ConstitutionController {
         }
         return res.api(result.data);
       }).catch(next);
+  }
+
+  /**
+   * 下载体质报告模版
+   * @param req
+   * @param res
+   * @param next
+   */
+  static template(req, res) {
+    const type = req.query.type;
+    let name = '';
+    switch (type) {
+      case '1':
+        name = '骨密度评估报告模版';
+        break;
+      case '2':
+        name = '心肺功能评估报告模版';
+        break;
+      case '3':
+        name = '脊柱功能评估报告模版';
+        break;
+      case '4':
+        name = '体成份评估报告模版';
+        break;
+      case '5':
+        name = '体成份评估报告模版';
+        break;
+      default:
+        name = '体成份评估报告模版';
+        break;
+    }
+    fs.readFile(`./public/template/${name}.xlsx`, 'binary', (err, file) => {
+      if (err) {
+        res.error({ code: 29999, msg: '找不到此文件' });
+      } else {
+        res.writeHead(200, {
+          'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=utf-8',
+          'Content-Disposition': `attachment; filename="${encodeURIComponent(name)}.xlsx";`,
+        });
+        res.write(file, 'binary');
+        res.end();
+      }
+    });
   }
 }
 

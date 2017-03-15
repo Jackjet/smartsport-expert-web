@@ -39,6 +39,10 @@
     "port": 10009,
     "host": "localhost"
   },
+  "school-class": {
+    "port": 10010,
+    "host": "localhost"
+  },
   "sms": {
     "port": 10011,
     "host": "localhost"

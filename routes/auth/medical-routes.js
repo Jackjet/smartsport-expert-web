@@ -1,5 +1,6 @@
 const express = require('express');
 const passport = require('passport');
+const connect = require('connect-multiparty');
 
 const router = express.Router();
 const medicalController = require('../../controllers/medical-controller');
@@ -19,5 +20,11 @@ router.get('/', passport.authenticate('permission'), utils.refsFull, medicalCont
 
 // 根据id查询体检报告详情
 router.get('/:id', passport.authenticate('permission'), utils.refsFull, medicalController.getById);
+
+// 删除体检报告
+router.delete('/:id', passport.authenticate('permission'), medicalController.delete);
+
+// 导入体检报告
+router.post('/import', connect(), medicalController.import);
 
 module.exports = router;
