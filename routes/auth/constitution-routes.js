@@ -1,5 +1,6 @@
 const express = require('express');
 const passport = require('passport');
+const connect = require('connect-multiparty');
 
 const router = express.Router();
 const constitutionController = require('../../controllers/constitution-controller');
@@ -19,5 +20,8 @@ router.get('/', passport.authenticate('permission'), utils.refsFull, constitutio
 
 // 根据id查询体质报告详情
 router.get('/:id', passport.authenticate('permission'), utils.refsFull, constitutionController.getById);
+
+// 导入体质报告
+router.post('/import', connect(), constitutionController.import);
 
 module.exports = router;

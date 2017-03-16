@@ -5,29 +5,14 @@ const fs = require('fs');
 const xlsx = require('node-xlsx');
 
 /**
- * 类型转换，例如低转换为1，正常转换为2，高转换为3
+ * 类型转换，例如时间转换
  * @param key {String} 健
  * @param value {String|Number} 值
  * @return {*}
  */
 function typeConvert(key, value) {
   let result = value;
-  if (key === 'totalCholLevel' || key === 'triglycerideLevel' || key === 'HDL-CLevel' || key === 'LDL-CLevel') {
-    switch (value) {
-      case '低':
-        result = 1;
-        break;
-      case '正常':
-        result = 2;
-        break;
-      case '高':
-        result = 3;
-        break;
-      default:
-        result = value;
-        break;
-    }
-  } else if (key === 'time') {
+  if (key === 'time') {
     // 从execl读取的时间数值转换为时间格式
     result = new Date(1900, 0, value);
   }
