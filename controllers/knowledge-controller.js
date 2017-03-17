@@ -148,11 +148,14 @@ class KnowledgeController {
         auditList.push(item.auditBy);
       });
       return Promise.props({
-        auditBy: serviceProxy.send({ module: 'expert-user', cmd: 'user_read', data: { _id: { $in: auditList } } }),
-        tags: serviceProxy.send({ module: 'knowledge', cmd: 'knowledge_tag_read', data: { _id: { $in: tagList } } }),
-        type: serviceProxy.send({ module: 'knowledge', cmd: 'knowledge_type_read', data: { _id: { $in: typeList } } }),
+        auditBy: serviceProxy
+          .send({ module: 'expert-user', cmd: 'user_read', data: { filters: { _id: { $in: auditList } } } }),
+        tags: serviceProxy
+          .send({ module: 'knowledge', cmd: 'knowledge_tag_read', data: { filters: { _id: { $in: tagList } } } }),
+        type: serviceProxy
+          .send({ module: 'knowledge', cmd: 'knowledge_type_read', data: { filters: { _id: { $in: typeList } } } }),
         category: serviceProxy
-          .send({ module: 'knowledge', cmd: 'knowledge_category_read_list', data: { _id: { $in: categoryList } } }),
+          .send({ module: 'knowledge', cmd: 'knowledge_category_read_list', data: { filter: { _id: { $in: categoryList } } } }),
       });
     }).then((props) => {
       for (let i = 0; i < knowledge.length; i += 1) {
@@ -209,10 +212,11 @@ class KnowledgeController {
         auditBy: serviceProxy.send({ module: 'expert-user', cmd: 'user_read_id', data: { id: result.data.auditBy } }),
         createBy: serviceProxy.send({ module: 'expert-user', cmd: 'user_read_id', data: { id: result.data.auditBy } }),
         expertComments: serviceProxy
-          .send({ module: 'expert-user', cmd: 'user_read', data: { _id: { $in: commentsForExpert } } }),
+          .send({ module: 'expert-user', cmd: 'user_read', data: { filters: { _id: { $in: commentsForExpert } } } }),
         mgntComments: serviceProxy
-          .send({ module: 'management-user', cmd: 'user_find', data: { _id: { $in: commentsFormgnt } } }),
-        tags: serviceProxy.send({ module: 'knowledge', cmd: 'knowledge_tag_read', data: { $in: result.data.tags } }),
+          .send({ module: 'management-user', cmd: 'user_find', data: { filters: { _id: { $in: commentsFormgnt } } } }),
+        tags: serviceProxy
+          .send({ module: 'knowledge', cmd: 'knowledge_tag_read', data: { filters: { _id: { $in: result.data.tags } } } }),
         type: serviceProxy
           .send({ module: 'knowledge', cmd: 'knowledge_type_read_id', data: { id: result.data.type } }),
         category: serviceProxy
@@ -221,6 +225,7 @@ class KnowledgeController {
       });
     }).then((props) => {
       const knowledge = props.knowledge;
+
       const commentsUser =
         [...(props.mgntComments.data && props.mgntComments.data.results), ...props.expertComments.data];
       knowledge.type = props.type.data;
@@ -235,7 +240,7 @@ class KnowledgeController {
       // 添加备注人名称
       for (let j = 0; j < knowledge.comments.length; j += 1) {
         const user =  _.find(commentsUser, { _id: knowledge.comments[j].commentBy });
-        knowledge.comments[j].commentName = user.name;
+        knowledge.comments[j].commentName = user && user.name;
       }
       // 是否有审核权限
       knowledge.audit = props.audit;

@@ -243,7 +243,25 @@ class ConstitutionController {
       if (!result.success) {
         return res.error({ code: 29999, msg: result.msg });
       }
-      return res.api(result.data);
+      const constitution = result.data;
+      const studentList = [];
+      constitution.forEach((item) => {
+        studentList.push(item.student);
+      });
+      return Promise.props({
+        constitution,
+        student: serviceProxy
+          .send({
+            module: 'school-class',
+            cmd: 'student_read',
+            data: { filters: { _id: { $in: studentList } } } }),
+      });
+    }).then((props) => {
+      const constitution = props.constitution;
+      for (let i = 0; i < constitution.length; i += 1) {
+        constitution[i].student = _.find(props.student.data, { _id: constitution[i].student });
+      }
+      return res.api(constitution);
     }).catch(next);
   }
 
@@ -299,7 +317,7 @@ class ConstitutionController {
         name = '体成份评估报告模版';
         break;
     }
-    fs.readFile(`./public/template/${name}.xls`, 'binary', (err, file) => {
+    return fs.readFile(`./public/template/${name}.xls`, 'binary', (err, file) => {
       if (err) {
         res.error({ code: 29999, msg: '找不到此文件' });
       } else {

@@ -103,7 +103,25 @@ class MedicalController {
       if (!result.success) {
         return res.error({ code: 29999, msg: result.msg });
       }
-      return res.api(result.data);
+      const medical = result.data;
+      const studentList = [];
+      medical.forEach((item) => {
+        studentList.push(item.student);
+      });
+      return Promise.props({
+        medical,
+        student: serviceProxy
+          .send({
+            module: 'school-class',
+            cmd: 'student_read',
+            data: { filters: { _id: { $in: studentList } } } }),
+      });
+    }).then((props) => {
+      const medical = props.medical;
+      for (let i = 0; i < medical.length; i += 1) {
+        medical[i].student = _.find(props.student.data, { _id: medical[i].student });
+      }
+      return res.api(medical);
     }).catch(next);
   }
 
