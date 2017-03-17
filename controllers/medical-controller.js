@@ -50,15 +50,15 @@ class MedicalController {
     const userId = req.user.sub;
     const body = req.body;
     const params = req.params;
-    if (!body.student) {
-      return res.error({ code: 29999, msg: '缺少必要参数学生id' });
-    }
     return Promise.resolve().then(() => {
       const data = body;
       // 创建体检报告
       if (req.method.toUpperCase() === 'POST') {
         data.createBy = userId;
         return serviceProxy.send({ module: 'body-test-management', cmd: 'medical_create', data });
+      }
+      if (!body.student) {
+        return res.error({ code: 29999, msg: '缺少必要参数学生id' });
       }
       // 修改体检报告
       data.id = params.id;

@@ -190,15 +190,15 @@ class ConstitutionController {
     const userId = req.user.sub;
     const body = req.body;
     const params = req.params;
-    if (!body.student) {
-      return res.error({ code: 29999, msg: '缺少必要参数学生id' });
-    }
     return Promise.resolve().then(() => {
       const data = body;
       // 创建体质报告
       if (req.method.toUpperCase() === 'POST') {
         data.createBy = userId;
         return serviceProxy.send({ module: 'body-test-management', cmd: 'constitution_create', data });
+      }
+      if (!body.student) {
+        return res.error({ code: 29999, msg: '缺少必要参数学生id' });
       }
       // 修改体质报告
       data.id = params.id;
