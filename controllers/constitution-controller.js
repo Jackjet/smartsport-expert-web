@@ -45,21 +45,21 @@ function factory(ary, data) {
  */
 function getReportProperty(type) {
   if (type === '1') { // 骨密度
-    // [ '序号', '学号', '姓名', '性别', '体测类型', '年龄', '测评次数',
+    // [ '序号', '学年', '学号', '姓名', '性别', '体测类型', '年龄', '测评次数',
     // '测试部位', 'T值', 'Z值', '骨强度指数 ', '骨质情况', '%年轻人', '%同龄人','骨折风险倍数', '评测时间' ]
-    return ['order', 'num', 'name', 'sex', 'type', 'age', 'count',
+    return ['order', 'schoolYear', 'num', 'name', 'sex', 'type', 'age', 'count',
       'data.part', 'data.TValue', 'data.ZValue', 'data.intensityExponent', 'data.situation',
       'data.percentageYoungAdult', 'data.percentagePeer', 'data.fractureRiskMultiple', 'time'];
   } else if (type === '2') { // 心肺功能
-    // [ '序号', '学号', '姓名', '性别', '年龄', '体测类型', '测评次数', '有锻炼情况',
+    // [ '序号', '学年', '学号', '姓名', '性别', '年龄', '体测类型', '测评次数', '有锻炼情况',
     // '身高', '体重', '1级功率心率（次/分）', '2级功率心率（次/分）', 'F.C心肺功能(MET)',
     // '心肺功能标准', '心肺功能评语', '最大摄氧量相对值 ', '最大摄氧量绝对值 ', '评测时间' ]
-    return ['order', 'num', 'name', 'sex', 'age', 'type', 'count',
+    return ['order', 'schoolYear', 'num', 'name', 'sex', 'age', 'type', 'count',
       'data.exercise', 'data.height', 'data.weight', 'data.firstPowerRate', 'data.secondPowerRate',
       'data.functionalCapacity', 'data.cardioStandard', 'data.cardioComment',
       'data.maxOxygenUptakeValues', 'data.maxAbsoluteOxygenUptake', 'time'];
   } else if (type === '3') { // 脊柱功能
-    // [ '序号', '学号', '姓名', '性别', '年龄', '体测类型', '测评次数', '评测时间', '测试部位',
+    // [ '序号', '学年', '学号', '姓名', '性别', '年龄', '体测类型', '测评次数', '评测时间', '测试部位',
     // '直立(Th1/2)', '直立(Th2/3)', '直立(Th3/4)', '直立(Th4/5)',
     // '直立(Th5/6)',
     // '直立(Th6/7)', '直立(Th7/8)', '直立(Th8/9)', '直立(Th9/10)',
@@ -85,7 +85,7 @@ function getReportProperty(type) {
     // '腰椎曲度值', '腰椎曲度值级别', '脊柱形态分析', '腰部疼痛综合症风险',
     // '腰椎（椎间盘）疾病风险',
     // '综合评分', '结果建议' ],
-    return ['order', 'num', 'name', 'sex', 'age', 'type', 'count', 'time', 'data.part',
+    return ['order', 'schoolYear', 'num', 'name', 'sex', 'age', 'type', 'count', 'time', 'data.part',
       'data.spineErect.Th1/2', 'data.spineErect.Th2/3', 'data.spineErect.Th3/4', 'data.spineErect.Th4/5',
       'data.spineErect.Th5/6',
       'data.spineErect.Th6/7', 'data.spineErect.Th7/8', 'data.spineErect.Th8/9', 'data.spineErect.Th9/10',
@@ -112,7 +112,7 @@ function getReportProperty(type) {
       'data.lumbarDiseaseRisk',
       'data.score', 'data.spineSuggestion'];
   } else if (type === '4') { // 体成份
-    // [ '序号', '学号', '姓名', '性别', '年龄', '体测类型', '测评次数', '评测时间',
+    // [ '序号', '学年', '学号', '姓名', '性别', '年龄', '体测类型', '测评次数', '评测时间',
     // '身高', '身高标准', '体重', '体重标准', '去脂体重',
     // '肌肉量', '肌肉量级别',
     // '身份水分', '细胞内液', '细胞外液', '蛋白质',
@@ -129,7 +129,7 @@ function getReportProperty(type) {
     // '右下肢肌肉量', '右下肢肌肉量',
     // '右下肢脂肪率', '目标体重', '体重控制', '脂肪控制',
     // '肌肉控制', '综合评分' ],
-    return ['order', 'num', 'name', 'sex', 'age', 'type', 'count', 'time',
+    return ['order', 'schoolYear', 'num', 'name', 'sex', 'age', 'type', 'count', 'time',
       'data.height', 'data.heightLevel', 'data.weight', 'data.weightLevel', 'data.degreaseWeight',
       'data.muscle', 'data.muscleLevel',
       'data.bodyMoisture', 'data.intracellularFluid', 'data.extracellularFluid', 'data.protein',
@@ -148,7 +148,7 @@ function getReportProperty(type) {
       'data.muscleControl', 'data.score'];
   }
   // 血管机能
-  // [ '序号', '学号', '姓名', '性别', '年龄', '体测类型', '测评次数', '评测时间',
+  // [ '序号', '学年', '学号', '姓名', '性别', '年龄', '体测类型', '测评次数', '评测时间',
   // '身高''体重', '心率（次/分）', '身体质量指数',
   // '右臂血压-舒张压', '右臂血压-收缩压',
   // '右臂-脉压', '右臂血压标准', '左臂血压-舒张压',
@@ -162,7 +162,7 @@ function getReportProperty(type) {
   // '右踝血管弹性Z值', '左踝血管阻塞值', '左踝血管阻塞程度',
   // '右踝血管阻塞值', '右踝血管阻塞程度',
   // '血管弹性程度（PWV）评价', '血管阻塞程度（ABI）评价' ]
-  return ['order', 'num', 'name', 'sex', 'age', 'type', 'count', 'time',
+  return ['order', 'schoolYear', 'num', 'name', 'sex', 'age', 'type', 'count', 'time',
     'data.height', 'data.weight', 'data.heartRate', 'data.BMI',
     'data.rightArmBloodPressureDBP', 'data.rightArmBloodPressureSBP',
     'data.rightArmBloodPressurePP', 'data.rightArmBloodPressure', 'data.leftArmBloodPressureDBP',

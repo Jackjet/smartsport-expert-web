@@ -201,10 +201,10 @@ class MedicalController {
     }
     const filePath = req.files.files.path;
     const workbook = xlsx.parse(fs.readFileSync(filePath));
-    // [ '序号', '学号', '姓名', '性别', '年龄', '体检类型', '测评次数',
+    // [ '序号', '学年', '学号', '姓名', '性别', '年龄', '体检类型', '测评次数',
     // '总胆固醇', '总胆固醇标准', '甘油三脂', '甘油三脂标准', '高密度蛋白质胆固醇',
     // '高密度蛋白质胆固醇标准', '低密度蛋白质胆固醇', '低密度蛋白质胆固醇标准' , '评测时间'],
-    const propertyName = ['order', 'num', 'name', 'sex', 'age',
+    const propertyName = ['order', 'schoolYear', 'num', 'name', 'sex', 'age',
       'type', 'count', 'totalChol', 'totalCholLevel', 'triglyceride',
       'triglycerideLevel', 'HDL-C', 'HDL-CLevel', 'LDL-C', 'LDL-CLevel', 'time'];
     // 构造数据存储数据库
