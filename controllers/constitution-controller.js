@@ -109,7 +109,7 @@ function getReportProperty(type) {
       'data.spineLoad.L4/L5', 'data.spineLoad.L5/S1', 'data.spineLoadEvaluate', 'data.thoracicCurvature',
       'data.thoracicCurvatureLevel',
       'data.lumbarCurvature', 'data.lumbarCurvatureLevel', 'data.spinalShape', 'data.lumbarPainSyndromesRisk',
-      'data.LumbarDiseaseRisk',
+      'data.lumbarDiseaseRisk',
       'data.score', 'data.spineSuggestion'];
   } else if (type === '4') { // 体成份
     // [ '序号', '学号', '姓名', '性别', '年龄', '体测类型', '测评次数', '评测时间',
