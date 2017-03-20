@@ -10,15 +10,16 @@ class GradeDictController {
       const data = _.pick(query, ['filters']);
       let id = '';
       if (req.userInfo) {
+        console.log(req.userInfo)
         id = req.userInfo.school;
       }
       if (data.filters.school) {
         id = data.filters.school;
         delete data.filters.school;
       }
-      if (id) {
+      if (id !== '') {
         const school = yield serviceProxy.send({ module: 'school', cmd: 'school_read', data: { id } });
-        if (school.success) {
+        if (school.success && school.data.length> 0) {
           // todo school表中的schoolType 是数组，班级表中是Number, 现只取第一个
           data.filters.schoolType = school.data.schoolType[0];
         }
