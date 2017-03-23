@@ -19,7 +19,7 @@ class GradeDictController {
       }
       if (id !== '') {
         const school = yield serviceProxy.send({ module: 'school', cmd: 'school_read', data: { id } });
-        if (school.success && school.data.length> 0) {
+        if (school.success && school.data !== null) {
           // todo school表中的schoolType 是数组，班级表中是Number, 现只取第一个
           data.filters.schoolType = school.data.schoolType[0];
         }
