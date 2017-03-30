@@ -1,7 +1,9 @@
 const Locator = require('xyj-service-locator');
 const _ = require('lodash');
-const servicesConfig = require('../configs/service-config.json');
 const methodsConfig = require('../configs/methods-config.json');
+
+const NODE_ENV = process.env.NODE_ENV || 'development';
+const servicesConfig = require(`../configs/service-config.${NODE_ENV}.json`);
 
 const serviceLocator = new Locator(servicesConfig);
 const logger = require('xyj-logger').Logger('serviceProxy.js');
