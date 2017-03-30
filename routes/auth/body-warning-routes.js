@@ -1,5 +1,5 @@
 const express = require('express');
-// const passport = require('passport');
+const passport = require('passport');
 
 const router = express.Router();
 const utils = require('../../middleware/utils');
@@ -7,6 +7,7 @@ const Controller = require('../../controllers/body-warning-controller');
 
 const controller = new Controller('body-warning-controller.js', 'bodyTestManagement', 'warning');
 
+router.use(passport.authenticate('permission'));
 
 // 查询所有
 router.get('/', utils.refsFull, controller.find.bind(controller));
