@@ -29,8 +29,13 @@ passport.use(new JwtStrategy(jwtOpts, jwtVerify));
  */
 function jwtVerify(payload, done) {
   const jti = payload.jti;
+  const realm = payload.realm;
   if (!jti) {
     return done('Invalid token due to jwt has no jti.', payload);
+  }
+  // 判断token角色
+  if (realm !== 'expert-user') {
+    return done(null, false);
   }
   return serviceProxy.send({ module: 'auth', cmd: 'revokeToken_read', data: { id: jti } }, (err, token) => {
     if (err) {
