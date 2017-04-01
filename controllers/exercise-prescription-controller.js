@@ -71,7 +71,6 @@ class ExercisePrescriptionController {
     const data = { 
       id: req.params.id,
     };
-    Object.assign(data, { id });
     serviceProxy.send({ module: role, cmd: `${prifix}_read_id`, data })
       .then((result) => {
         if (result.success) {
