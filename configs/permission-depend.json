@@ -1,0 +1,156 @@
+{
+  "expert_permission_read": {
+    "name": "查看系统权限",
+    "depend": [ ]
+  },
+  "expert_role_read": {
+    "name": "查看系统角色",
+    "depend": [ ]
+  },
+  "expert_role_create": {
+    "name": "新增系统角色",
+    "depend": [ ]
+  },
+  "expert_role_update": {
+    "name": "编辑系统角色",
+    "depend": [ ]
+  },
+  "expert_user_read": {
+    "name": "查看系统用户",
+    "depend": [ ]
+  },
+  "expert_user_create": {
+    "name": "新增系统用户",
+    "depend": [
+      "expert_role_read"
+    ]
+  },
+  "expert_user_update": {
+    "name": "编辑系统用户",
+    "depend": [
+      "expert_role_read"
+    ]
+  },
+  "expert_user_reset_password": {
+    "name": "重置密码",
+    "depend": [ ]
+  },
+  "knowledge_read": {
+    "name": "查看知识",
+    "depend": [ ]
+  },
+  "knowledge_create": {
+    "name": "新增知识",
+    "depend": [
+      "knowledge_category_read"
+    ]
+  },
+  "knowledge_update": {
+    "name": "编辑知识",
+    "depend": [
+      "knowledge_category_read"
+    ]
+  },
+  "knowledge_audit": {
+    "name": "审核知识",
+    "depend": [
+      "knowledge_category_read"
+    ]
+  },
+  "constitution_read": {
+    "name": "查看体质报告",
+    "depend": [
+      "school_read"
+    ]
+  },
+  "constitution_create": {
+    "name": "新增体质报告",
+    "depend": [ ]
+  },
+  "constitution_update": {
+    "name": "编辑体质报告",
+    "depend": [ ]
+  },
+  "medical_read": {
+    "name": "查看体检报告",
+    "depend": [
+      "school_read"
+    ]
+  },
+  "medical_create": {
+    "name": "新增体检报告",
+    "depend": [ ]
+  },
+  "medical_update": {
+    "name": "编辑体检报告",
+    "depend": [ ]
+  },
+  "medical_delete": {
+    "name": "删除体检报告",
+    "depend": [ ]
+  },
+  "exercise_prescription_read": {
+    "name": "查看运动处方",
+    "depend": [ ]
+  },
+  "exercise_prescription_create": {
+    "name": "新增运动处方",
+    "depend": [ ]
+  },
+  "exercise_prescription_update": {
+    "name": "编辑运动处方",
+    "depend": [ ]
+  },
+  "exercise_prescription_delete": {
+    "name": "删除运动处方",
+    "depend": [ ]
+  },
+  "knowledge_category_read": {
+    "name": "查看知识分类",
+    "depend": [ ]
+  },
+  "knowledge_category_create": {
+    "name": "新增知识分类",
+    "depend": [ ]
+  },
+  "knowledge_category_update": {
+    "name": "编辑知识分类",
+    "depend": [ ]
+  },
+  "knowledge_category_delete": {
+    "name": "删除知识分类",
+    "depend": [ ]
+  },
+  "school_read": {
+    "name": "查看学校",
+    "depend": [ ]
+  },
+  "school_create": {
+    "name": "新增学校",
+    "depend": [ ]
+  },
+  "school_update": {
+    "name": "编辑学校",
+    "depend": [ ]
+  },
+  "school_delete": {
+    "name": "删除学校",
+    "depend": [ ]
+  },
+  "body_warning_read": {
+    "name": "查看预警",
+    "depend": [ ]
+  },
+  "body_warning_create": {
+    "name": "新增预警",
+    "depend": [ ]
+  },
+  "body_warning_update": {
+    "name": "编辑预警",
+    "depend": [ ]
+  },
+  "body_warning_delete": {
+    "name": "删除预警",
+    "depend": [ ]
+  }
+}
