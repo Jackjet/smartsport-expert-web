@@ -1,5 +1,12 @@
 {
   "port": 3001,
+  "secret": "secret",
+  "tokenExpiresIn": "7 days",
+  "verify-code": {
+    "role": "expert-user",
+    "len": 6,
+    "tokenExpiresIn": "180000"
+  },
   "logger": {
     "consoleLevel": 2,
     "fileLevel": 1,

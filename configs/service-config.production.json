@@ -1,58 +1,66 @@
 {
   "management-user": {
     "port": 10000,
-    "host": "localhost"
+    "host": "120.77.251.248"
   },
   "auth": {
     "port": 10001,
-    "host": "localhost"
+    "host": "120.77.251.248"
   },
   "region": {
     "port": 10002,
-    "host": "localhost"
+    "host": "120.77.251.248"
   },
   "school": {
     "port": 10003,
-    "host": "localhost"
+    "host": "120.77.251.248"
   },
   "school-user": {
     "port": 10004,
-    "host": "localhost"
+    "host": "120.77.251.248"
   },
   "gov-agency": {
     "port": 10005,
-    "host": "localhost"
+    "host": "120.77.251.248"
   },
   "gov-agency-user": {
     "port": 10006,
-    "host": "localhost"
+    "host": "120.77.251.248"
   },
   "expert-team": {
     "port": 10007,
-    "host": "localhost"
+    "host": "120.77.251.248"
   },
   "expert-user": {
     "port": 10008,
-    "host": "localhost"
+    "host": "120.77.251.248"
   },
   "knowledge": {
     "port": 10009,
-    "host": "localhost"
-  },
-  "sport-category": {
-    "port": 10015,
-    "host": "localhost"
-  },
-  "standard-lesson-plan": {
-    "port": 10016,
-    "host": "localhost"
+    "host": "120.77.251.248"
   },
   "school-class": {
     "port": 10010,
-    "host": "localhost"
+    "host": "120.77.251.248"
   },
-  "app-version": {
-    "port": 10020,
-    "host": "localhost"
+  "sms": {
+    "port": 10011,
+    "host": "120.77.251.248"
+  },
+  "body-test-management": {
+    "port": 10018,
+    "host": "120.77.251.248"
+  },
+  "exercise-prescription": {
+    "port": 10019,
+    "host": "120.77.251.248"
+  },
+  "sport-category": {
+    "port": 10015,
+    "host": "120.77.251.248"
+  },
+  "school-class": {
+    "port": 10010,
+    "host": "120.77.251.248"
   }
 }
