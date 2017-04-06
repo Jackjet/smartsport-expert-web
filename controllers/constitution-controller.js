@@ -374,7 +374,7 @@ class ConstitutionController {
           data[i].school = once.activeSchool[0];
           // 班级处理
           once.activeClass.forEach((item) => {
-            if (item.status === 1) {
+            if (item.status === 8 || item.status === 2) {
               data[i].class = item._id;
             }
           });
