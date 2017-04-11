@@ -44,6 +44,7 @@ class UserController {
     // 添加创建者
     data.createdBy = req.user && req.user.sub;
     data.expertTeam = req.userInfo.expertTeam;
+    data.createType = 2;
     if (!ObjectId.isValid(req.body.role)) {
       return res.error({ code: 29999, msg: '该角色不存在' });
     }
@@ -150,6 +151,7 @@ class UserController {
     const query = req.query;
     const data = _.pick(query, ['filters']);
     data.filters.expertTeam = req.userInfo.expertTeam;
+    data.filters.createType = 2;
     return serviceProxy.send({ module: 'expert-user', cmd: 'user_count', data }).then((result) => {
       if (!result.success) {
         return res.error({ code: 29999, msg: result.msg });
@@ -163,6 +165,7 @@ class UserController {
     const query = req.query;
     const data = _.pick(query, ['filters', 'limit', 'skip', 'sort']);
     data.filters.expertTeam = req.userInfo.expertTeam;
+    data.filters.createType = 2;
     const team = [];
     const role = [];
     // 查找用户列表
