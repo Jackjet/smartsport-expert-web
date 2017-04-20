@@ -210,7 +210,7 @@ class KnowledgeController {
       return Promise.props({
         knowledge: result.data,
         auditBy: serviceProxy.send({ module: 'expert-user', cmd: 'user_read_id', data: { id: result.data.auditBy } }),
-        createBy: serviceProxy.send({ module: 'expert-user', cmd: 'user_read_id', data: { id: result.data.auditBy } }),
+        createBy: serviceProxy.send({ module: 'expert-user', cmd: 'user_read_id', data: { id: result.data.createBy } }),
         expertComments: serviceProxy
           .send({ module: 'expert-user', cmd: 'user_read', data: { filters: { _id: { $in: commentsForExpert } } } }),
         mgntComments: serviceProxy
