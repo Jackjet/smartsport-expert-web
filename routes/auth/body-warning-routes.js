@@ -12,6 +12,8 @@ router.use(passport.authenticate('permission'));
 // 查询所有
 router.get('/', utils.refsFull, controller.find.bind(controller));
 
+router.get('/count', utils.refsFull, controller.count.bind(controller));
+
 // 通过id查询指定
 router.get('/:id', controller.findById.bind(controller));
 

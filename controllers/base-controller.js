@@ -97,6 +97,25 @@ class BaseController {
       })
       .catch(next);
   }
+
+  /**
+   *  条件查询体检报告条数
+   * @param req
+   * @param res
+   * @param next
+   * @returns {Promise|Promise.<T>}
+   */
+  count(req, res, next) {
+    const query = req.query;
+    const data = _.pick(query, ['filters']);
+    return $[this.module][`${this.method}Count`](data)
+      .then((result) => {
+      if (!result.success) {
+        return res.error({ code: 29999, msg: result.msg });
+      }
+      return res.api(result.data);
+    }).catch(next);
+  }
 }
 
 module.exports = BaseController;

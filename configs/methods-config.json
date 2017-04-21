@@ -23,6 +23,7 @@
       "warning_delete",
       "warning_read",
       "warning_read_id",
+      "warning_count",
       "subject_read",
       "subject_read_id"
     ]
