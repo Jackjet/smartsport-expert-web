@@ -13,8 +13,8 @@ const xlsx = require('node-xlsx');
 function typeConvert(key, value) {
   let result = value;
   if (key === 'time') {
-    // 从execl读取的时间数值转换为时间格式
-    result = new Date(1900, 0, value);
+    // 从execl读取的时间数值转换为时间格式,正常时间格式默认会是0时区16时
+    result = new Date(1900, 0, value, -8);
   }
   return result;
 }
