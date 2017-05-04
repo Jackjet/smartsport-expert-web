@@ -370,8 +370,7 @@ class ConstitutionController {
           notStudentNum += 1;
         } else {
           data[i].student = once._id;
-          // TODO 如学生表改动需要改动
-          data[i].school = once.activeSchool[0];
+          data[i].school = once.school;
           // 班级处理
           once.activeClass.forEach((item) => {
             if (item.status === 8 || item.status === 2) {
