@@ -368,11 +368,10 @@ class ConstitutionController {
     if (type !== '1' && type !== '2' && type !== '3' && type !== '4' && type !== '5' && type !== '6' && type !== '7') {
       return res.error({ code: 29999, msg: 'type参数错误' });
     }
-    // if (!req.files || !req.files.files || !req.files.files.path) {
-    //   return res.error({ code: 29999, msg: '请上传文件' });
-    // }
-    // const filePath = req.files.files.path;
-    const filePath = './public/template/其他项报告模版.xls';
+    if (!req.files || !req.files.files || !req.files.files.path) {
+      return res.error({ code: 29999, msg: '请上传文件' });
+    }
+    const filePath = req.files.files.path;
     const propertyName = getReportProperty(type);
     const workbook = xlsx.parse(fs.readFileSync(filePath));
     const data = factory(propertyName, workbook[0].data);
