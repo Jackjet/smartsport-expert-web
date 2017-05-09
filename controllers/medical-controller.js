@@ -203,10 +203,12 @@ class MedicalController {
     const workbook = xlsx.parse(fs.readFileSync(filePath));
     // [ '序号', '学年', '学号', '姓名', '性别', '年龄', '体检类型', '测评次数',
     // '总胆固醇', '总胆固醇标准', '甘油三脂', '甘油三脂标准', '高密度蛋白质胆固醇',
-    // '高密度蛋白质胆固醇标准', '低密度蛋白质胆固醇', '低密度蛋白质胆固醇标准' , '评测时间'],
+    // '高密度蛋白质胆固醇标准', '低密度蛋白质胆固醇', '低密度蛋白质胆固醇标准' ,
+    // '血糖', '胰岛素', '血红蛋白', '评测时间'],
     const propertyName = ['order', 'schoolYear', 'num', 'name', 'sex', 'age',
       'type', 'count', 'totalChol', 'totalCholLevel', 'triglyceride',
-      'triglycerideLevel', 'HDL-C', 'HDL-CLevel', 'LDL-C', 'LDL-CLevel', 'time'];
+      'triglycerideLevel', 'HDL-C', 'HDL-CLevel', 'LDL-C', 'LDL-CLevel',
+      'glucose', 'insulin', 'hemoglobin', 'time'];
     // 构造数据存储数据库
     const data = factory(propertyName, workbook[0].data);
     // 有多少条数据无法对应上学生
@@ -221,7 +223,7 @@ class MedicalController {
       // 匹配学生
       for (let i = 0; i < data.length; i += 1) {
         data[i].createBy = userId;
-        const once = _.find(student, { name: data[i].name, num: data[i].num.toString() });
+        const once = _.find(student, { name: data[i].name, num: data[i].num && data[i].num.toString() });
         if (!once) {
           notStudentNum += 1;
         } else {

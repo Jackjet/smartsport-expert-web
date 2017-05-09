@@ -46,18 +46,18 @@ function factory(ary, data) {
 function getReportProperty(type) {
   if (type === '1') { // 骨密度
     // [ '序号', '学年', '学号', '姓名', '性别', '体测类型', '年龄', '测评次数',
-    // '测试部位', 'T值', 'Z值', '骨强度指数 ', '骨质情况', '%年轻人', '%同龄人','骨折风险倍数', '评测时间' ]
+    // '测试部位', 'T值', 'Z值', '骨强度指数 ', '骨质情况', '%年轻人', '%同龄人','骨折风险倍数', 'SOS', '评测时间' ]
     return ['order', 'schoolYear', 'num', 'name', 'sex', 'type', 'age', 'count',
       'data.part', 'data.TValue', 'data.ZValue', 'data.intensityExponent', 'data.situation',
-      'data.percentageYoungAdult', 'data.percentagePeer', 'data.fractureRiskMultiple', 'time'];
+      'data.percentageYoungAdult', 'data.percentagePeer', 'data.fractureRiskMultiple', 'data.SOS', 'time'];
   } else if (type === '2') { // 心肺功能
     // [ '序号', '学年', '学号', '姓名', '性别', '年龄', '体测类型', '测评次数', '有锻炼情况',
     // '身高', '体重', '1级功率心率（次/分）', '2级功率心率（次/分）', 'F.C心肺功能(MET)',
-    // '心肺功能标准', '心肺功能评语', '最大摄氧量相对值 ', '最大摄氧量绝对值 ', '评测时间' ]
+    // '心肺功能标准', '心肺功能评语', '最大摄氧量相对值 ', '最大摄氧量绝对值 ', '安静心率', '肺活量', 'PACER', '评测时间' ]
     return ['order', 'schoolYear', 'num', 'name', 'sex', 'age', 'type', 'count',
       'data.exercise', 'data.height', 'data.weight', 'data.firstPowerRate', 'data.secondPowerRate',
       'data.functionalCapacity', 'data.cardioStandard', 'data.cardioComment',
-      'data.maxOxygenUptakeValues', 'data.maxAbsoluteOxygenUptake', 'time'];
+      'data.maxOxygenUptakeValues', 'data.maxAbsoluteOxygenUptake', 'data.RHR', 'data.FVC', 'data.PACER', 'time'];
   } else if (type === '3') { // 脊柱功能
     // [ '序号', '学年', '学号', '姓名', '性别', '年龄', '体测类型', '测评次数', '评测时间', '测试部位',
     // '直立(Th1/2)', '直立(Th2/3)', '直立(Th3/4)', '直立(Th4/5)',
@@ -120,7 +120,8 @@ function getReportProperty(type) {
     // '体脂肪率类型', '身体质量指数 ', '身体质量类型', '基础代谢', '总能量代谢',
     // '浮肿指数', '浮肿指数级别', '内脏脂肪数值',
     // '内脏脂肪等级 ', '内脏脂肪面积',
-    // '内脏脂肪含量', '皮下脂肪含量', '腰臀比数值', '腰臀比级别', '腹部肥胖类型',
+    // '内脏脂肪含量', '皮下脂肪含量', '腹部肥胖率', '胸围',
+    // '腰围', '臀围', '腰臀比数值', '腰臀比级别', '腹部肥胖类型',
     // '肥胖分布类型', '左上肢肌肉量', '左上肢脂肪量',
     // '左上肢脂肪率', '右上肢肌肉量',
     // '右上肢脂肪量', '右上肢脂肪率', '躯干肌肉量',
@@ -137,7 +138,8 @@ function getReportProperty(type) {
       'data.bodyFatLevel', 'data.BMI', 'data.BMILevel', 'data.basalMetabolic', 'data.energyMetabolism',
       'data.swellingIndex', 'data.swellingIndexLevel', 'data.viscelralFatRating',
       'data.viscelralFatRatingLevel', 'data.VFAMRI',
-      'data.visceralAdiposity', 'data.subcutaneousFatContent', 'data.WHR', 'data.WHRLevel', 'data.abdominalObesity',
+      'data.visceralAdiposity', 'data.subcutaneousFatContent', 'data.waistHipRatio', 'data.bust',
+      'data.waistline', 'data.hipline', 'data.WHR', 'data.WHRLevel', 'data.abdominalObesity',
       'data.fatDistribution', 'data.leftUpperLimbMuscle', 'data.leftUpperLimbFat',
       'data.leftUpperLimbBodyFat', 'data.rightUpperLimbMuscle',
       'data.rightUpperLimbFat', 'data.rightUpperLimbBodyFat', 'data.torsoUpperLimbMuscle',
@@ -146,36 +148,51 @@ function getReportProperty(type) {
       'data.rightLowerLimbMuscle', 'data.rightLowerLimbFat',
       'data.rightLowerLimbBodyFat', 'data.goalWeight', 'data.weightControl', 'data.fatControl',
       'data.muscleControl', 'data.score'];
+  } else if (type === '5') {
+    // 血管机能
+    // [ '序号', '学年', '学号', '姓名', '性别', '年龄', '体测类型', '测评次数', '评测时间',
+    // '身高''体重', '心率（次/分）', '身体质量指数',
+    // '右臂血压-舒张压', '右臂血压-收缩压',
+    // '右臂-脉压', '右臂血压标准', '左臂血压-舒张压',
+    // '左臂血压-收缩压', '左臂-脉压',
+    // '左臂血压标准', '右踝血压-舒张压', '右踝血压-收缩压',
+    // '右踝-脉压', '左踝血压-舒张压',
+    // '左踝血压-收缩压', '左踝-脉压', '左踝（PWV)',
+    // '左踝血管弹性级别', '右踝（PWV)',
+    // '左踝血管弹性级别', '左踝血管弹性同龄人相比%',
+    // '右踝血管弹性同龄人相比%', '左踝血管弹性Z值',
+    // '右踝血管弹性Z值', '左踝血管阻塞值', '左踝血管阻塞程度',
+    // '右踝血管阻塞值', '右踝血管阻塞程度',
+    // '收缩压', '舒张压',
+    // '血管弹性程度（PWV）评价', '血管阻塞程度（ABI）评价' ]
+    return ['order', 'schoolYear', 'num', 'name', 'sex', 'age', 'type', 'count', 'time',
+      'data.height', 'data.weight', 'data.heartRate', 'data.BMI',
+      'data.rightArmBloodPressureDBP', 'data.rightArmBloodPressureSBP',
+      'data.rightArmBloodPressurePP', 'data.rightArmBloodPressure', 'data.leftArmBloodPressureDBP',
+      'data.leftArmBloodPressureSBP', 'data.leftArmBloodPressurePP',
+      'data.leftArmBloodPressure', 'data.rightAnkleBloodPressureDBP', 'data.rightAnkleBloodPressureSBP',
+      'data.rightAnkleBloodPressurePP', 'data.leftAnkleBloodPressureDBP',
+      'data.leftAnkleBloodPressureSBP', 'data.leftAnkleBloodPressurePP', 'data.leftAnklePWV',
+      'data.leftAnkleLevelPWV', 'data.rightAnklePWV',
+      'data.rightAnkleLevelPWV', 'data.leftAnklePercentagePeerPWV',
+      'data.rightAnklePercentagePeerPWV', 'data.leftAnkleZValuePWV',
+      'data.rightAnkleZValuePWV', 'data.leftAnkleABI', 'data.leftAnkleABILevel',
+      'data.rightAnkleABI', 'data.rightAnkleABILevel',
+      'data.bloodSystolic', 'data.bloodDiastolic',
+      'data.veinSuggestion.PWV', 'data.veinSuggestion.ABI'];
+  } else if (type === '6') {
+    // 身体素质
+    // ['序号', '学年', '学号', '姓名', '性别', '体测类型', '年龄', '测评次数',
+    // '50米跑', '握力体重指数', '仰卧起坐', '立定跳远', '坐位体前屈', '跳绳', '闭眼单脚立', '选择反应时', '评测时间']
+    return ['order', 'schoolYear', 'num', 'name', 'sex', 'type', 'age', 'count',
+      'data.fiftyRun', 'data.gripBodyIndex', 'data.crunch', 'data.standingJump', 'data.sitAndReach',
+      'data.ropeSkipping', 'data.halferStand', 'data.VCRT', 'time'];
   }
-  // 血管机能
-  // [ '序号', '学年', '学号', '姓名', '性别', '年龄', '体测类型', '测评次数', '评测时间',
-  // '身高''体重', '心率（次/分）', '身体质量指数',
-  // '右臂血压-舒张压', '右臂血压-收缩压',
-  // '右臂-脉压', '右臂血压标准', '左臂血压-舒张压',
-  // '左臂血压-收缩压', '左臂-脉压',
-  // '左臂血压标准', '右踝血压-舒张压', '右踝血压-收缩压',
-  // '右踝-脉压', '左踝血压-舒张压',
-  // '左踝血压-收缩压', '左踝-脉压', '左踝（PWV)',
-  // '左踝血管弹性级别', '右踝（PWV)',
-  // '左踝血管弹性级别', '左踝血管弹性同龄人相比%',
-  // '右踝血管弹性同龄人相比%', '左踝血管弹性Z值',
-  // '右踝血管弹性Z值', '左踝血管阻塞值', '左踝血管阻塞程度',
-  // '右踝血管阻塞值', '右踝血管阻塞程度',
-  // '血管弹性程度（PWV）评价', '血管阻塞程度（ABI）评价' ]
-  return ['order', 'schoolYear', 'num', 'name', 'sex', 'age', 'type', 'count', 'time',
-    'data.height', 'data.weight', 'data.heartRate', 'data.BMI',
-    'data.rightArmBloodPressureDBP', 'data.rightArmBloodPressureSBP',
-    'data.rightArmBloodPressurePP', 'data.rightArmBloodPressure', 'data.leftArmBloodPressureDBP',
-    'data.leftArmBloodPressureSBP', 'data.leftArmBloodPressurePP',
-    'data.leftArmBloodPressure', 'data.rightAnkleBloodPressureDBP', 'data.rightAnkleBloodPressureSBP',
-    'data.rightAnkleBloodPressurePP', 'data.leftAnkleBloodPressureDBP',
-    'data.leftAnkleBloodPressureSBP', 'data.leftAnkleBloodPressurePP', 'data.leftAnklePWV',
-    'data.leftAnkleLevelPWV', 'data.rightAnklePWV',
-    'data.rightAnkleLevelPWV', 'data.leftAnklePercentagePeerPWV',
-    'data.rightAnklePercentagePeerPWV', 'data.leftAnkleZValuePWV',
-    'data.rightAnkleZValuePWV', 'data.leftAnkleABI', 'data.leftAnkleABILevel',
-    'data.rightAnkleABI', 'data.rightAnkleABILevel',
-    'data.veinSuggestion.PWV', 'data.veinSuggestion.ABI'];
+  // 其他项
+  // ['序号', '学年', '学号', '姓名', '性别', '年龄', '体测类型', '测评次数',
+  // '左眼裸眼视力', '右眼裸眼视力', '评测时间']
+  return ['order', 'schoolYear', 'num', 'name', 'sex', 'age', 'type', 'count',
+    'data.leftEyeVision', 'data.rightEyeVision', 'time'];
 }
 
 class ConstitutionController {
@@ -293,7 +310,7 @@ class ConstitutionController {
    */
   static template(req, res) {
     const type = req.query.type;
-    if (type !== '1' && type !== '2' && type !== '3' && type !== '4' && type !== '5') {
+    if (type !== '1' && type !== '2' && type !== '3' && type !== '4' && type !== '5' && type !== '6' && type !== '7') {
       return res.error({ code: 29999, msg: 'type参数错误' });
     }
     let name = '';
@@ -313,8 +330,14 @@ class ConstitutionController {
       case '5':
         name = '血管机能评估报告模版';
         break;
+      case '6':
+        name = '身体素质报告模版';
+        break;
+      case '7':
+        name = '其他项报告模版';
+        break;
       default:
-        name = '体成份评估报告模版';
+        name = '其他项报告模版';
         break;
     }
     return fs.readFile(`./public/template/${name}.xls`, 'binary', (err, file) => {
@@ -334,7 +357,7 @@ class ConstitutionController {
   /**
    * 导入体制报告
    * @param req
-   *  query.type {String} 1-骨密度，2-心肺功能， 3-脊柱功能， 4-体成份， 5-血管机能
+   *  query.type {String} 1-骨密度，2-心肺功能， 3-脊柱功能， 4-体成份， 5-血管机能, 6-身体素质，7-其他项
    * @param res
    * @param next
    * @return {Promise|Promise.<TResult>}
@@ -342,13 +365,14 @@ class ConstitutionController {
   static import(req, res, next) {
     const userId = req.user.sub;
     const type = req.query.type;
-    if (type !== '1' && type !== '2' && type !== '3' && type !== '4' && type !== '5') {
+    if (type !== '1' && type !== '2' && type !== '3' && type !== '4' && type !== '5' && type !== '6' && type !== '7') {
       return res.error({ code: 29999, msg: 'type参数错误' });
     }
-    if (!req.files || !req.files.files || !req.files.files.path) {
-      return res.error({ code: 29999, msg: '请上传文件' });
-    }
-    const filePath = req.files.files.path;
+    // if (!req.files || !req.files.files || !req.files.files.path) {
+    //   return res.error({ code: 29999, msg: '请上传文件' });
+    // }
+    // const filePath = req.files.files.path;
+    const filePath = './public/template/其他项报告模版.xls';
     const propertyName = getReportProperty(type);
     const workbook = xlsx.parse(fs.readFileSync(filePath));
     const data = factory(propertyName, workbook[0].data);
