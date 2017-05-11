@@ -66,5 +66,5 @@
   "app-version": {
     "port": 10020,
     "host": "localhost"
-  },
+  }
 }
