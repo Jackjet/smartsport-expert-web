@@ -62,5 +62,9 @@
   "school-class": {
     "port": 10010,
     "host": "localhost"
-  }
+  },
+  "app-version": {
+    "port": 10020,
+    "host": "localhost"
+  },
 }
