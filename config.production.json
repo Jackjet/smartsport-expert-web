@@ -2,6 +2,11 @@
   "port": 3001,
   "secret": "secret",
   "tokenExpiresIn": "7 days",
+  "consulReady": "true",
+  "consul": {
+    "host": "172.18.212.163",
+    "port": 8500
+  },
   "verify-code": {
     "role": "expert-user",
     "len": 6,

@@ -1,12 +1,28 @@
 const Locator = require('xyj-service-locator');
 const _ = require('lodash');
+const Consul = require('xyj-consul');
+const nconf = require('nconf');
+
+const consul = new Consul(nconf.get('consul'));
 const methodsConfig = require('../configs/methods-config.json');
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
-const servicesConfig = require(`../configs/service-config.${NODE_ENV}.json`);
+let servicesConfig = require(`../configs/service-config.${NODE_ENV}.json`);
 
-const serviceLocator = new Locator(servicesConfig);
 const logger = require('xyj-logger').Logger('serviceProxy.js');
+
+let serviceLocator;
+
+// 开启consul，兼容配置文件方式
+if (nconf.get('consulReady')) {
+  consul.listFormat((err, config) => {
+    if (err) throw err;
+    servicesConfig = config;
+    serviceLocator = new Locator(servicesConfig);
+  });
+} else {
+  serviceLocator = new Locator(servicesConfig);
+}
 
 /**
  * 封装seneca的act方法
