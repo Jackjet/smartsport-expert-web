@@ -172,7 +172,7 @@ class MedicalController {
    * @param next
    */
   static template(req, res) {
-    const name = '体检报告模版';
+    const name = '血液健康报告模版';
     fs.readFile(`./public/template/${name}.xls`, 'binary', (err, file) => {
       if (err) {
         res.error({ code: 29999, msg: '找不到此文件' });
